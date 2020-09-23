@@ -8,7 +8,7 @@ import socket
 from datetime import datetime
 from dotenv import load_dotenv
 from nested_lookup import nested_lookup
-from discord.ext.commands import Bot
+#from discord.ext.commands import Bot
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 client = discord.Client()
@@ -24,7 +24,7 @@ playerInfoCont_dict = 0
 playersOnline = 0
 slotInfoSt_dict = 0
 slotInfoCont_dict = 0
-currState = 0
+servState = 0
 lastHeartbeat = 0
 endTime = 2600
 
@@ -38,7 +38,7 @@ def conversion(sec):
    return strRetunrn
 
 def checkType(recvMessage_dict):
-    global heart_dict, missionInfo_dict, playerInfoSt_dict, playerInfoCont_dict, slotInfoSt_dict, slotInfoCont_dict, currState, lastHeartbeat
+    global heart_dict, missionInfo_dict, playerInfoSt_dict, playerInfoCont_dict, slotInfoSt_dict, slotInfoCont_dict, servState, lastHeartbeat, playersOnline
     type = recvMessage_dict.get("type")
     print('Message type: {}'.format(type))
     if type == 1:
@@ -51,7 +51,7 @@ def checkType(recvMessage_dict):
         player_dict = playerInfoSt_dict.get('players')
         playerList = nested_lookup('name', player_dict)
         playersOnline = playerList
-        bot.change_presence(game.discord.Game(name='P = {}/60, Status: = {}'.format(playersOnline, servState)))
+        #bot.change_presence(game.discord.Game(name='P = {}/60, Status: = {}'.format(playersOnline, servState)))
 
     elif type == 4:
         playerInfoCont_dict = recvMessage_dict.get("data" , "Please wait for this information to be intialised and try again soon")
@@ -86,7 +86,7 @@ def checkTime():
     return info
 
 def checkStatus():
-    if 'currState' in globals() and currState != 0 :
+    if 'servState' in globals():
         info = "OEO is currently: {}".format(servState)
     else:
         info = "Please wait for this information to be intialised and try again soon"
@@ -97,7 +97,7 @@ def checkStatus():
 
 def checkPlayers():
     if 'playerInfoSt_dict' in globals() and type(playerInfoSt_dict) is dict:
-        info = 'Players currently online: {}/60'.format(playersOnline)
+        info = 'Players currently online: {}/60'.format(len(playersOnline))
     else:
         info = "Please wait for this information to be intialised and try again soon"
     return info
