@@ -26,10 +26,19 @@ slotInfoSt_dict = 0
 slotInfoCont_dict = 0
 servState = 0
 lastHeartbeat = 0
+endTime = 2600
 
 def toGo():
-    timeRaw = heart_dict.get('time_left')
-    return conversion(timeRaw)
+    timeRaw = heart_dict.get('time')
+    ServHour = timeRaw.get('hour')
+    hourInS = ServHour * 3600
+    ServMin =  timeRaw.get('min')
+    minInS = ServMin * 60
+    serverTimeS = hourInS+minInS               
+    if(ServHour < 200):
+        serverTimeS = serverTimeS + 24*3600  
+    endTimeinS = 26 * 3600
+    return conversion(endTimeinS - serverTimeS)
  
 def conversion(sec):
    sec_value = sec % (24 * 3600)
@@ -134,7 +143,7 @@ def checkInfo():
             restart = "Please wait for this information to be intialised and try again soon"
         info = "Server: Operation Enduring Oddysey\nMission: {}\nTheater: {}\nLocal Time: {}\nRestart: {}".format(mission, theater, time, restart)
     else:
-        info = "Please wait for this information to be intialised and try again soon"
+        info = "Please wait for this information to be initialised and try again soon"
     if info:
             await message.channel.send(info)
 
