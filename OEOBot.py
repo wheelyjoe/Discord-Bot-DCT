@@ -106,7 +106,7 @@ def checkStatus():
 
 def checkPlayers():
     if 'playerInfoSt_dict' in globals() and type(playerInfoSt_dict) is dict:
-        info = 'Players currently online: {}/60'.format(len(playersOnline))
+        info = 'Players currently online: {}/60'.format(len(playersOnline) - 1)
     else:
         info = "Please wait for this information to be intialised and try again soon"
     return info
@@ -126,7 +126,7 @@ def gen_dict_extract(key, var):
 
 def checkRestart():
     if 'heart_dict' in globals() and type(heart_dict) is dict:
-        info = " ```The server will restart in {} ```".toGo())
+        info = " ```The server will restart in {} ```".format(toGo())
     else:
         info = "Please wait for this information to be intialised and try again soon"
     return info
@@ -135,17 +135,12 @@ def checkInfo():
     if 'missionInfo_dict' in globals() and type(missionInfo_dict) is dict:
         theater = missionInfo_dict.get('theater')
         mission = missionInfo_dict.get('mission')
-        if type('heart_dict') is dict:
-            time = getMisTime()
-            restart = toGo()
-        else:  
-            time = "Please wait for this information to be intialised and try again soon"   
-            restart = "Please wait for this information to be intialised and try again soon"
+        time = getMisTime()
+        restart = toGo()
         info = "Server: Operation Enduring Oddysey\nMission: {}\nTheater: {}\nLocal Time: {}\nRestart: {}".format(mission, theater, time, restart)
     else:
         info = "Please wait for this information to be initialised and try again soon"
-    if info:
-            await message.channel.send(info)
+    return info
 
 def thread_recieve():
     while True:
@@ -161,27 +156,27 @@ def thread_message():
             return
 
         if message.content == '!help':
-            info = '``!Server Info`` - returns a summary of server information.``\n``!Time`` or ``!Mission Time`` - returns in-game time and time to next restart.\n ``!Status`` or ``!Server Status`` returns server status.\n``!Players`` or ``!List Players`` returns number of players online.\n``!Reset`` or ``!Restart`` returns time to next server reset.'
+            info = '```!Server Info - returns a summary of server information.\n!Time or !Mission Time - returns in-game time and time to next restart.\n!Status or !Server Status returns server status.\n!Players or !List Players returns number of players online.\n!Reset or !Restart returns time to next server reset.```'
             if info:
                 await message.channel.send(info)
 
-        if message.content == '!Time' or message.content == '!Mission Time':
+        if message.content == '!Time' or message.content == '!time':
             info = checkTime()
             if info:
                 await message.channel.send(info)
                 
 
-        if message.content == '!Status' or message.content ==  '!Server Status':
+        if message.content == '!Status' or message.content ==  '!status':
             info = checkStatus()
             if info:
                 await message.channel.send(info)
 
-        if message.content == '!Players' or message.content ==  '!List Players':
+        if message.content == '!Players' or message.content ==  '!players':
             info = checkPlayers()
             if info:
                 await message.channel.send(info)
                 
-        if message.content == "!Reset" or message.content == "!Restart":
+        if message.content == "!Reset" or message.content == "!reset":
             info = checkRestart()
             if info:
                 await message.channel.send(info)
